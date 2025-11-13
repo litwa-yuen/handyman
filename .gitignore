@@ -65,3 +65,6 @@ fastlane/test_output
 
 # Exclude all plist files
 *.plist
+
+# Exclude all .DS_Store
+.DS_Store
