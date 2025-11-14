@@ -17,6 +17,12 @@ struct SignUpView: View {
             Text ( "Create An Account")
                 .font(.title)
                 .fontWeight(.bold)
+            if let error = signUpViewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+            }
+
             Group {
                 TextField( "Name", text: $signUpViewModel.name)
                 TextField( "Email", text: $signUpViewModel.email)
@@ -26,14 +32,7 @@ struct SignUpView: View {
             }
             .textFieldStyle()
             
-            Button {
-                Task {
-                    if let user = await signUpViewModel.signUpWithEmail() {
-                        appState.currentUser = user
-                        dismiss()
-                    }
-                }
-            } label: {
+            Button { signUpWithEmail() } label: {
                 Text("Create An Account")
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
@@ -42,9 +41,20 @@ struct SignUpView: View {
                     .background(.red)
                     .cornerRadius(8)
                     .padding(.horizontal)
+                    .opacity(signUpViewModel.canSubmit ? 1.0 : 0.5)
             }
+            .disabled(!signUpViewModel.canSubmit)
             
             Spacer()
+        }
+    }
+    
+    private func signUpWithEmail()  {
+        Task {
+            if let user = await signUpViewModel.signUpWithEmail() {
+                appState.currentUser = user
+                dismiss()
+            }
         }
     }
 }

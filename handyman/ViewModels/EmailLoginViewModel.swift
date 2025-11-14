@@ -17,14 +17,17 @@ final class EmailLoginViewModel {
     
     public var resetEmailSent: Bool = false
     
+    func isFormValid() -> Bool {
+        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    var canSubmit: Bool { isFormValid() && !isLoading }
+
+    
     func loginWithEmail() async -> UserInfo? {
-        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your email."
-            return nil
-        }
-        
-        guard !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your password."
+        guard email.trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail() else {
+            errorMessage = "Invalid email format."
             return nil
         }
         isLoading = true
@@ -34,20 +37,20 @@ final class EmailLoginViewModel {
         do {
             let user = try await AuthenicationManager.shared.loginWithEmail(email: email, password: password)
             return user
-        } catch let authError as AuthError {
+        } catch let authError as AuthError  {
             errorMessage = authError.localizedDescription
         } catch {
-            print(error)
-           // errorMessage = AuthErrors.unknown(error: error).localizedDescription
+            errorMessage = AuthError.unknown(error: error).localizedDescription
         }
         return nil
     }
     
     func resetPassword() async {
-        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your email."
+        guard email.trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail() else {
+            errorMessage = "Invalid email format."
             return
         }
+        
         isLoading = true
         
         defer {
@@ -57,12 +60,10 @@ final class EmailLoginViewModel {
         do {
             try await AuthenicationManager.shared.resetPassword(email: email)
             resetEmailSent = true
-        } catch let authError as AuthError {
+        } catch let authError as AuthError  {
             errorMessage = authError.localizedDescription
-        }
-        catch {
-            print(error)
-            //errorMessage = AuthErrors.unknown(error: error).localizedDescription
+        } catch {
+            errorMessage = AuthError.unknown(error: error).localizedDescription
         }
         
     }

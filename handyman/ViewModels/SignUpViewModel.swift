@@ -14,18 +14,29 @@ final class SignUpViewModel {
     var password: String = ""
     var confirmPassword: String = ""
     var email: String = ""
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     
     public var isLoading: Bool = false
     public var errorMessage: String? = nil
 
+    /// Returns true when all fields are non-empty after trimming whitespace and newlines.
+    func isFormValid() -> Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !confirmPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+
+
+    /// Returns true when the form can be submitted (valid and not loading).
+    var canSubmit: Bool { isFormValid() && !isLoading }
+
     func signUpWithEmail() async -> UserInfo? {
-        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your name."
-            return nil
-        }
-        
-        guard !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your password."
+        errorMessage = nil
+
+        guard email.trimmingCharacters(in: .whitespacesAndNewlines).isValidEmail() else {
+            errorMessage = "Invalid email format."
             return nil
         }
         
@@ -34,10 +45,6 @@ final class SignUpViewModel {
             return nil
         }
         
-        guard !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please enter your email."
-            return nil
-        }
         isLoading = true
         defer {
             isLoading = false
@@ -53,3 +60,4 @@ final class SignUpViewModel {
         return nil
     }
 }
+

@@ -4,7 +4,7 @@ find handyman in your local region
 # //DONE: forget password
 # //DONE: google login
 # //DONE: apple login
-# //TODO: error handle
+# //DONE: error handle
 # //TODO: user icon 
 
 
