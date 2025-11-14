@@ -11,12 +11,19 @@ struct EmailLoginView: View {
     @State var emailViewModel: EmailLoginViewModel = EmailLoginViewModel()
     @EnvironmentObject var appState: AppStateViewModel
     @Environment(\.dismiss) var dismiss
+    @State private var showingAlert = false
 
     
     var body: some View {
         VStack(spacing: 16) {
             Text("Login With Email")
                 .font(.title).bold()
+            
+            if let error = emailViewModel.errorMessage { // Conditionally display error message
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+            }
             
             VStack(spacing: 16) {
                 TextField("Email", text: $emailViewModel.email)
@@ -42,8 +49,10 @@ struct EmailLoginView: View {
                     .background(.red)
                     .cornerRadius(8)
                     .padding(.horizontal)
+                    .opacity(emailViewModel.canSubmit ? 1.0 : 0.5)
             }
             .padding(.horizontal)
+            .disabled(!emailViewModel.canSubmit)
             
             Button("Forget Password?") { sendPasswordReset() }
             .font(.footnote)
@@ -53,11 +62,21 @@ struct EmailLoginView: View {
             
             Spacer()
         }
+        .alert("Check your email", isPresented: $showingAlert) {
+               Button("OK") {
+                   showingAlert = false
+               }
+           } message: {
+               Text("Check your email for a link to reset your password.")
+           }
     }
     
     private func sendPasswordReset()  {
         Task {
             await emailViewModel.resetPassword()
+            if emailViewModel.resetEmailSent {
+                showingAlert = true
+            }
         }
     }
 }
