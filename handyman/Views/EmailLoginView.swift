@@ -9,6 +9,9 @@ import SwiftUI
 
 struct EmailLoginView: View {
     @State var emailViewModel: EmailLoginViewModel = EmailLoginViewModel()
+    @EnvironmentObject var appState: AppStateViewModel
+    @Environment(\.dismiss) var dismiss
+
     
     var body: some View {
         VStack(spacing: 16) {
@@ -26,8 +29,8 @@ struct EmailLoginView: View {
             Button {
                 Task {
                     if let user = await emailViewModel.loginWithEmail() {
-                        print(user.displayName)
-                        print("Login Successful")
+                        appState.currentUser = user
+                        dismiss()
                     }
                 }
             } label: {
@@ -41,6 +44,14 @@ struct EmailLoginView: View {
                     .padding(.horizontal)
             }
             .padding(.horizontal)
+            
+            Button("Forget Password?") {
+               // Task { await emailViewModel.sendPasswordReset() }
+            }
+            .font(.footnote)
+            .foregroundColor(.blue)
+            .fontWeight(.bold)
+            .padding(.top, 8)
             
             Spacer()
         }

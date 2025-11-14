@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SignUpView: View {
     @State var signUpViewModel = SignUpViewModel()
-    
+    @EnvironmentObject var appState: AppStateViewModel
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         VStack {
             Text ( "Create An Account")
@@ -27,7 +29,8 @@ struct SignUpView: View {
             Button {
                 Task {
                     if let user = await signUpViewModel.signUpWithEmail() {
-                        print("User Signed Up: \(user)")
+                        appState.currentUser = user
+                        dismiss()
                     }
                 }
             } label: {
