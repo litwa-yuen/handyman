@@ -1,10 +1,12 @@
 # handyman
 find handyman in your local region
 # //DONE: email login 
-# //TODO: forget password
-# //TODO: google login
-# //TODO: apple login
+# //DONE: forget password
+# //DONE: google login
+# //DONE: apple login
+# //TODO: error handle
 # //TODO: user icon 
+
 
 # //TODO: setting page (view profile, edit profile)
 
