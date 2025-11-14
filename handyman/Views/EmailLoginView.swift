@@ -45,15 +45,19 @@ struct EmailLoginView: View {
             }
             .padding(.horizontal)
             
-            Button("Forget Password?") {
-               // Task { await emailViewModel.sendPasswordReset() }
-            }
+            Button("Forget Password?") { sendPasswordReset() }
             .font(.footnote)
             .foregroundColor(.blue)
             .fontWeight(.bold)
             .padding(.top, 8)
             
             Spacer()
+        }
+    }
+    
+    private func sendPasswordReset()  {
+        Task {
+            await emailViewModel.resetPassword()
         }
     }
 }
