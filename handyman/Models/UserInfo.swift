@@ -10,10 +10,12 @@ struct UserInfo: Codable {
     let uid: String
     let email: String?
     let displayName: String?
+    let photoURL: String?
     
     init(user: User) {
         self.uid = user.uid
         self.email = user.email
         self.displayName = user.displayName
+        self.photoURL = user.photoURL?.absoluteString
     }
 }

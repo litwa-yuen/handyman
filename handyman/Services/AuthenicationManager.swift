@@ -6,9 +6,13 @@
 //
 import FirebaseAuth
 import Foundation
+import AuthenticationServices
+import CryptoKit
 
 class AuthenicationManager {
     static let shared = AuthenicationManager()
+    
+    private var currentNonce: String?
     
     private init() {}
     
@@ -38,6 +42,20 @@ class AuthenicationManager {
     
     func signOut() throws {
         try Auth.auth().signOut()
+    }
+    
+    func signInWithApple(token: AppleAuthResultModel) async throws -> UserInfo {
+        let credential = OAuthProvider.credential(providerID: AuthProviderID.apple,
+                                                  idToken: token.idToken,
+                                                  rawNonce: token.nonce ?? "")
+        let authResult = try await Auth.auth().signIn(with: credential)
+        return UserInfo(user: authResult.user)
+    }
+    
+    func signInWithGoogle(tokens: GoogleResultTokens) async throws -> UserInfo {
+        let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
+        let authResult = try await Auth.auth().signIn(with: credential)
+        return UserInfo(user: authResult.user)
     }
     
 }

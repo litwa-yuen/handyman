@@ -10,6 +10,7 @@ import AuthenticationServices
 
 struct LoginButtons: View {
     var type: LoginType
+    var action: () -> Void = {}
     var body: some View {
         switch type {
         case .apple:
@@ -19,9 +20,7 @@ struct LoginButtons: View {
                 .cornerRadius(8)
                 .padding(.horizontal)
         case .google:
-            Button {
-                
-            } label: {
+            Button(action:action) {
                 HStack {
                     Image("google")
                         .resizable()

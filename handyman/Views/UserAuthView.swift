@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct UserAuthView: View {
+    @State private var userAuthViewModel: UserAuthViewModel = UserAuthViewModel()
+    @EnvironmentObject var appState: AppStateViewModel
+    @Environment(\.dismiss) var dismiss
+
+    
     var body: some View {
         ZStack {
             //TODO: add background
@@ -39,11 +44,11 @@ struct UserAuthView: View {
             }
 
             VStack(spacing: 16) {
-                LoginButtons(type: .apple)
-                LoginButtons(type: .google)
+                LoginButtons(type: .apple) { signInWithApple() }
+                LoginButtons(type: .google) { signInWithGoogle() }
                 ORSeparator()
                 NavigationLink(destination: EmailLoginView()) {
-                    LoginButtons(type: .email)
+                    LoginButtons(type: .email) { }
                 }
             }
 
@@ -67,6 +72,24 @@ struct UserAuthView: View {
                 .fill(.white.opacity(0.6))
         )
         .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 4)
+    }
+    
+    private func signInWithGoogle()  {
+        Task {
+            if let user = try? await userAuthViewModel.signInWithGoogle() {
+                appState.currentUser = user
+                dismiss()
+            }
+        }
+    }
+    
+    private func signInWithApple()  {
+        Task {
+            if let user = try? await userAuthViewModel.signInWithApple() {
+                appState.currentUser = user
+                dismiss()
+            }
+        }
     }
 }
 

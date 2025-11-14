@@ -10,12 +10,17 @@ import FirebaseCore
 
 @main
 struct handymanApp: App {
+    @StateObject private var appState = AppStateViewModel()
+
     init() {
         FirebaseApp.configure()
     }
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                ContentView()
+            }
+            .environmentObject(appState)
         }
     }
 }
