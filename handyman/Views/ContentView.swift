@@ -15,7 +15,7 @@ struct ContentView: View {
         Group {
             NavigationStack {
                 if appState.isLoggedIn() {
-                    HomeView()
+                    AppTabView()
                 } else {
                     UserAuthView()
                 }

@@ -14,13 +14,28 @@ final class Utils {
     
     @MainActor
     func getTopViewController(controller: UIViewController? = nil) -> UIViewController? {
-        let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController
+        
+        let windowScene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+        
+        let root = windowScene?
+            .windows
+            .first(where: { $0.isKeyWindow })?
+            .rootViewController
+        
+        let controller = controller ?? root
         
         if let nav = controller as? UINavigationController {
             return getTopViewController(controller: nav.visibleViewController)
-        } else if let tab = controller as? UITabBarController, let selected = tab.selectedViewController {
+        }
+        
+        if let tab = controller as? UITabBarController,
+           let selected = tab.selectedViewController {
             return getTopViewController(controller: selected)
-        } else if let presented = controller?.presentedViewController {
+        }
+        
+        if let presented = controller?.presentedViewController {
             return getTopViewController(controller: presented)
         }
         
