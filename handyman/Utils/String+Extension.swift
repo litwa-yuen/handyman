@@ -13,4 +13,11 @@ extension String {
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: self)
     }
+    
+    func toSafeURL() -> URL? {
+        if let url = URL(string: self) {
+            return url
+        }
+        return URL(string: self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+    }
 }
