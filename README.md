@@ -5,10 +5,10 @@ find handyman in your local region
 # //DONE: google login
 # //DONE: apple login
 # //DONE: error handle
-# //TODO: user icon 
+# //DONE: user icon 
 
 
-# //TODO: setting page (view profile, edit profile)
+# //Progress: setting page (view profile, edit profile)
 
 # //TODO: create handyman profile (skills, paid, location, time available, certification verification)
 # //TODO: find handyman profile with location and radius
