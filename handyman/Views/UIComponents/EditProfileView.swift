@@ -8,7 +8,6 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
-    
     @Binding var profileImage: UIImage?
     let selectedImage: UIImage?
     @Binding var scale: CGFloat
@@ -19,7 +18,7 @@ struct EditProfileView: View {
     @State private var showImagePicker: Bool = true
 
     @Environment(\.dismiss) var dismiss
-    
+        
     let circleDiameter: CGFloat = 300
     
     init (
@@ -63,7 +62,12 @@ struct EditProfileView: View {
                 }
                 Spacer()
                 
-                Button(action: saveCroppedImage) {
+                Button {
+                    Task {
+                        await saveCroppedImage()
+                    }
+                }
+                label: {
                     Text("Continue")
                         .bold()
                         .foregroundStyle(.black)
@@ -110,8 +114,18 @@ struct EditProfileView: View {
     }
     
     private func clampedOffsetWithinScreen(for proposedOffset: CGPoint) -> CGPoint {
-        let screenWidth = UIScreen.main.bounds.width
-        let screenHeight = UIScreen.main.bounds.height
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first else {
+            return CGPoint.zero
+        }
+        
+        
+        // screen is NOT optional
+        let screen = windowScene.screen
+        let screenBounds = screen.bounds
+        let screenWidth = screenBounds.width
+        let screenHeight = screenBounds.height
         
         let maxX = screenWidth / 2
         let maxY = screenHeight / 2
@@ -122,24 +136,42 @@ struct EditProfileView: View {
         )
     }
     
-    private func saveCroppedImage() {
+    @MainActor
+    private func saveCroppedImage() async {
         guard selectedImage != nil else { return }
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first else { return }
-        
+
+        // Get windowScene + window
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first,
+              let window = windowScene.keyWindow else {
+            return
+        }
+
+        // screen is NOT optional
+        let screen = windowScene.screen
+        let screenBounds = screen.bounds
+
         let cropRect = CGRect(
-            x: (UIScreen.main.bounds.width - circleDiameter) / 2,
-            y: (UIScreen.main.bounds.height - circleDiameter) / 2,
+            x: (screenBounds.width - circleDiameter) / 2,
+            y: (screenBounds.height - circleDiameter) / 2,
             width: circleDiameter,
             height: circleDiameter
         )
-        
+
         let renderer = UIGraphicsImageRenderer(bounds: cropRect)
-        
-        profileImage = renderer.image { _ in
+
+        let cropped = renderer.image { _ in
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
         }
+
+        self.profileImage = cropped
+
+        FirebaseStorageService.shared.updateProfileImage(cropped)
+    
         dismiss()
     }
+
     
 }
 

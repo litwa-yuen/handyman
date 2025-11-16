@@ -9,6 +9,8 @@ import FirebaseAuth
 import SwiftUI
 
 class FirebaseStorageService {
+    static let shared = FirebaseStorageService()
+    private init() {}
     func uploadProfileImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else {
             completion(nil)

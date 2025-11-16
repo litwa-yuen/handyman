@@ -9,55 +9,14 @@ import PhotosUI
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppStateViewModel
-    @State var profileImage: UIImage? = nil
-    @State var selectedImage: UIImage? = nil
-    @State var selectedPickerItem: PhotosPickerItem? = nil
-    
-    @State var isEditorPresented: Bool = false
-    @State var isPhotoPickerPresented: Bool = false
-    @State var isConfirmationDialogPresented: Bool = false
-    
-    @State var editorOffset: CGPoint = .zero
-    @State var editorScale: CGFloat = 1
-    
-    
+    @State var profileImage: UIImage?
     var body: some View {
         NavigationView {
             ZStack {
                 Color.black.ignoresSafeArea() // full-screen black background
                 VStack(spacing: 34) {
                     VStack(spacing: 8) {
-                        if let profileImage = profileImage {
-                            Image(uiImage: profileImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 120, height: 120)
-                                .clipShape(.circle)
-                                .onTapGesture {
-                                    isConfirmationDialogPresented = true
-                                }
-                                .overlay(alignment: .bottomTrailing) {
-                                    ZStack {
-                                        Circle()
-                                            .foregroundStyle(.gray)
-                                            .frame(width: 25, height: 25)
-                                        Image(systemName: "pencil")
-                                    }
-                                    .offset(x: -5, y: -5)
-                                }
-                        } else {
-                            Circle()
-                                .fill(Color.gray.opacity(0.2))
-                                .frame(width: 120, height: 120)
-                                .overlay(
-                                    Text("Tap to Add")
-                                        .foregroundColor(.gray)
-                                        .font(.caption)
-                                )
-                                .onTapGesture {
-                                    isPhotoPickerPresented = true
-                                }
-                        }
+                        ProfileImageEditorView()
                         userInfo
                             .padding(.top)
                     }
@@ -65,39 +24,6 @@ struct SettingsView: View {
                 }
                 .padding(.horizontal)
                 .navigationBarTitleDisplayMode(.inline)
-                .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedPickerItem)
-                .confirmationDialog("Avtar", isPresented: $isConfirmationDialogPresented) {
-                    Button(action: {
-                        isEditorPresented = true
-                    }) {
-                        Text("Edit Photo")
-                    }
-                    
-                    Button(action: {
-                        editorScale = 1
-                        editorOffset = .zero
-                        selectedPickerItem = nil
-                        isPhotoPickerPresented = true
-                    }) {
-                        Text("Choose new photo")
-                    }
-                } message: {
-                    Text("Edit avatar")
-                }
-                .onChange(of: selectedPickerItem) { _, newValue in
-                    Task {
-                        if let newImage = await newValue?.loadUIImage() {
-                            selectedImage = newImage
-                        }
-                    }
-                }
-                .onChange(of: selectedImage) { _, newValue in
-                    guard newValue != nil else { return }
-                    isEditorPresented = true
-                }
-                .fullScreenCover(isPresented: $isEditorPresented) {
-                    EditProfileView($profileImage, selectedImage: selectedImage, scale: $editorScale, offset: $editorOffset)
-                }
             }
         }
     }
@@ -143,3 +69,4 @@ struct SettingsView: View {
         }
     }
 }
+
