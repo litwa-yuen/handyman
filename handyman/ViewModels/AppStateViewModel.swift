@@ -11,9 +11,11 @@ import Combine
 @MainActor
 final class AppStateViewModel: ObservableObject {
     @Published var currentUser: UserInfo? = nil
+    @Published var displayName: String? = ""
     
     init() {
         self.currentUser = AuthenicationManager.shared.getLoggedInUser()
+        self.displayName = self.currentUser?.displayName
     }
     
     func signOut() throws {

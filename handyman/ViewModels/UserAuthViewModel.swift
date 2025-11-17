@@ -25,4 +25,10 @@ class UserAuthViewModel {
         let userInfo = try await AuthenicationManager.shared.signInWithGoogle(tokens: tokens)
         return userInfo
     }
+    
+    func signInWithFacebook() async throws -> UserInfo {
+        let token = try await FacebookSignInHelper().signIn()
+        let userInfo = try await AuthenicationManager.shared.signInWithFacebook(token: token)
+        return userInfo
+    }
 }

@@ -36,6 +36,23 @@ struct LoginButtons: View {
                 .cornerRadius(8)
                 .padding(.horizontal)
             }
+        case .facebook:
+            Button(action:action) {
+                HStack {
+                    Image("facebook")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 18, height: 18)
+                    Text(type.title)
+                        .font(Font.system(size: 17, weight: .medium))
+                        .foregroundColor(.black)
+                }
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .padding(.horizontal, 16)
+                .background(.white)
+                .cornerRadius(8)
+                .padding(.horizontal)
+            }
         case .email:
             HStack {
                 Image(systemName: type.iconName)

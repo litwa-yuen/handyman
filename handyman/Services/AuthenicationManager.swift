@@ -58,5 +58,19 @@ class AuthenicationManager {
         return UserInfo(user: authResult.user)
     }
     
+    func signInWithFacebook(token: FacebookResultTokens) async throws -> UserInfo {
+        let credential = FacebookAuthProvider.credential(withAccessToken: token.accessToken)
+        let authResult = try await Auth.auth().signIn(with: credential)
+        return UserInfo(user: authResult.user)
+    }
+    
+    func updateCurrentUserDisplayName(_ name: String) async throws {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = name
+        try await changeRequest.commitChanges()
+    }
 }
 

@@ -1,5 +1,5 @@
 //
-//  EditProfileView.swift
+//  ProfileImageView.swift
 //  handyman
 //
 //  Created by Lit Wa Yuen on 11/14/25.
@@ -7,8 +7,7 @@
 import SwiftUI
 import PhotosUI
 
-struct EditProfileView: View {
-    
+struct ProfileImageEditView: View {
     @Binding var profileImage: UIImage?
     let selectedImage: UIImage?
     @Binding var scale: CGFloat
@@ -19,7 +18,7 @@ struct EditProfileView: View {
     @State private var showImagePicker: Bool = true
 
     @Environment(\.dismiss) var dismiss
-    
+        
     let circleDiameter: CGFloat = 300
     
     init (
@@ -63,7 +62,7 @@ struct EditProfileView: View {
                 }
                 Spacer()
                 
-                Button(action: saveCroppedImage) {
+                Button (action: { saveCroppedImage() }) {
                     Text("Continue")
                         .bold()
                         .foregroundStyle(.black)
@@ -99,7 +98,6 @@ struct EditProfileView: View {
                         lastOffset = offset
                     }
             )
-            
         )
         .onAppear {
             scale = 1
@@ -110,8 +108,15 @@ struct EditProfileView: View {
     }
     
     private func clampedOffsetWithinScreen(for proposedOffset: CGPoint) -> CGPoint {
-        let screenWidth = UIScreen.main.bounds.width
-        let screenHeight = UIScreen.main.bounds.height
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first else {
+            return CGPoint.zero
+        }
+        
+        // screen is NOT optional
+        let screenWidth = windowScene.screen.bounds.width
+        let screenHeight = windowScene.screen.bounds.height
         
         let maxX = screenWidth / 2
         let maxY = screenHeight / 2
@@ -124,31 +129,35 @@ struct EditProfileView: View {
     
     private func saveCroppedImage() {
         guard selectedImage != nil else { return }
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first else { return }
-        
+
+        // Get windowScene + window
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first,
+              let window = windowScene.keyWindow else {
+            return
+        }
+
+        // screen is NOT optional
+        let screenBounds = windowScene.screen.bounds
+
         let cropRect = CGRect(
-            x: (UIScreen.main.bounds.width - circleDiameter) / 2,
-            y: (UIScreen.main.bounds.height - circleDiameter) / 2,
+            x: (screenBounds.width - circleDiameter) / 2,
+            y: (screenBounds.height - circleDiameter) / 2,
             width: circleDiameter,
             height: circleDiameter
         )
-        
+
         let renderer = UIGraphicsImageRenderer(bounds: cropRect)
-        
-        profileImage = renderer.image { _ in
+
+        let cropped = renderer.image { _ in
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
         }
-        dismiss()
-    }
-    
-}
 
-extension PhotosPickerItem {
-    func loadUIImage() async -> UIImage? {
-        if let data = try? await loadTransferable(type: Data.self), let image = UIImage(data: data) {
-            return image
-        } else {
-            return nil
-        }
+        self.profileImage = cropped
+
+        FirebaseStorageService.shared.updateProfileImage(cropped)
+    
+        dismiss()
     }
 }
