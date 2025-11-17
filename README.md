@@ -10,6 +10,7 @@ find handyman in your local region
 # //DONE: setting page (view profile, edit profile)
 
 # //TODO: create handyman profile (skills, paid, location, time available, certification verification)
+# //TODO: term and agreement, background checkr, payment 
 # //TODO: find handyman profile with location and radius
 # //TODO: book appointment (request pending, request accepted, in progress, cancelled, done)
 # //TODO: view appointment
