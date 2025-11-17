@@ -55,19 +55,18 @@ public struct ProfileImageView: View {
         .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedPickerItem)
         .confirmationDialog("Avatar", isPresented: $isConfirmationDialogPresented) {
             Button(action: {
-                editorScale = 1
-                editorOffset = .zero
-                selectedPickerItem = nil
+                reset()
                 isPhotoPickerPresented = true
             }) { Text("Photo Library") }
 
             Button(action: {
-                editorScale = 1
-                editorOffset = .zero
-                selectedPickerItem = nil
+                reset()
                 isCameraPresented = true
             }) { Text("Camera") }
-        } 
+        }
+        .sheet(isPresented: $isCameraPresented) {
+            CameraView(image: $selectedImage)
+        }
         .onChange(of: selectedPickerItem) { _, newValue in
             Task {
                 if let newImage = await newValue?.loadUIImage() {
@@ -81,8 +80,13 @@ public struct ProfileImageView: View {
         }
         .fullScreenCover(isPresented: $isEditorPresented) {
             ProfileImageEditView($profileImage, selectedImage: selectedImage, scale: $editorScale, offset: $editorOffset)
-    
         }
+    }
+    
+    private func reset() {
+        editorScale = 1
+        editorOffset = .zero
+        selectedPickerItem = nil
     }
 }
 
