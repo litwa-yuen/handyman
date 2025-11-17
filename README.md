@@ -3,14 +3,14 @@ find handyman in your local region
 # //DONE: email login 
 # //DONE: forget password
 # //DONE: google login
-# //DONE: apple login
+# //Progress: apple login (need apple developer setup)
 # //DONE: error handle
 # //DONE: user icon 
 # //DONE: camera
 # //DONE: setting page (view profile, edit profile)
 
 # //TODO: create handyman profile (skills, paid, location, time available, certification verification)
-# //TODO: term and agreement, background checkr, payment 
+# //TODO: term and agreement, background checkr, payment (upfront cost)
 # //TODO: find handyman profile with location and radius
 # //TODO: book appointment (request pending, request accepted, in progress, cancelled, done)
 # //TODO: view appointment
