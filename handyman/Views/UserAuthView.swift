@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FacebookLogin
+
 
 struct UserAuthView: View {
     @State private var userAuthViewModel: UserAuthViewModel = UserAuthViewModel()
@@ -44,8 +46,9 @@ struct UserAuthView: View {
             }
 
             VStack(spacing: 16) {
-                LoginButtons(type: .apple) { signInWithApple() }
-                LoginButtons(type: .google) { signInWithGoogle() }
+                LoginButtons(type: .apple) { signIn(using: userAuthViewModel.signInWithApple) }
+                LoginButtons(type: .google) { signIn(using: userAuthViewModel.signInWithGoogle) }
+                LoginButtons(type: .facebook) { signIn(using: userAuthViewModel.signInWithFacebook) }
                 ORSeparator()
                 NavigationLink(destination: EmailLoginView()) {
                     LoginButtons(type: .email) { }
@@ -74,18 +77,9 @@ struct UserAuthView: View {
         .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 4)
     }
     
-    private func signInWithGoogle()  {
+    private func signIn(using method: @escaping () async throws -> UserInfo) {
         Task {
-            if let user = try? await userAuthViewModel.signInWithGoogle() {
-                appState.currentUser = user
-                dismiss()
-            }
-        }
-    }
-    
-    private func signInWithApple()  {
-        Task {
-            if let user = try? await userAuthViewModel.signInWithApple() {
+            if let user = try? await method() {
                 appState.currentUser = user
                 dismiss()
             }

@@ -11,6 +11,8 @@
 		55102EE52EC5A6F900FE9FAB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 55102EE42EC5A6F900FE9FAB /* FirebaseAnalytics */; };
 		55102EE72EC5A6F900FE9FAB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 55102EE62EC5A6F900FE9FAB /* FirebaseAuth */; };
 		55102EE92EC5A6F900FE9FAB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 55102EE82EC5A6F900FE9FAB /* FirebaseFirestore */; };
+		55348D212EC982B70079A80B /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 55348D202EC982B70079A80B /* FacebookCore */; };
+		55348D232EC982B70079A80B /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 55348D222EC982B70079A80B /* FacebookLogin */; };
 		555E25872EC6CB3800F3618D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 555E25862EC6CB3800F3618D /* GoogleSignInSwift */; };
 		555E258F2EC6D5F000F3618D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 555E258E2EC6D5F000F3618D /* GoogleSignIn */; };
 		555FC00D2EC80E300059649C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 555FC00C2EC80E300059649C /* FirebaseStorage */; };
@@ -76,8 +78,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55348D232EC982B70079A80B /* FacebookLogin in Frameworks */,
 				555E258F2EC6D5F000F3618D /* GoogleSignIn in Frameworks */,
 				55102EE52EC5A6F900FE9FAB /* FirebaseAnalytics in Frameworks */,
+				55348D212EC982B70079A80B /* FacebookCore in Frameworks */,
 				55102EE72EC5A6F900FE9FAB /* FirebaseAuth in Frameworks */,
 				55102EE92EC5A6F900FE9FAB /* FirebaseFirestore in Frameworks */,
 				555E25872EC6CB3800F3618D /* GoogleSignInSwift in Frameworks */,
@@ -149,6 +153,8 @@
 				555E25862EC6CB3800F3618D /* GoogleSignInSwift */,
 				555E258E2EC6D5F000F3618D /* GoogleSignIn */,
 				555FC00C2EC80E300059649C /* FirebaseStorage */,
+				55348D202EC982B70079A80B /* FacebookCore */,
+				55348D222EC982B70079A80B /* FacebookLogin */,
 			);
 			productName = handyman;
 			productReference = 55102E8C2EC590CE00FE9FAB /* handyman.app */;
@@ -236,6 +242,7 @@
 			packageReferences = (
 				55102EE32EC5A6F900FE9FAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				555E25852EC6CB3800F3618D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				55348D1F2EC982B70079A80B /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 55102E8D2EC590CE00FE9FAB /* Products */;
@@ -433,6 +440,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = handyman/handyman.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W66KJKQQEK;
@@ -442,6 +450,8 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = handyman/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Handyman\" would like to access the camera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"Handyman\" would like to access your photos";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -457,6 +467,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.1;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lit.wa.yuen.handyman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -478,6 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = handyman/handyman.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W66KJKQQEK;
@@ -487,6 +499,8 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = handyman/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Handyman\" would like to access the camera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"Handyman\" would like to access your photos";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -502,6 +516,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.1;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lit.wa.yuen.handyman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -670,6 +685,14 @@
 				minimumVersion = 12.5.0;
 			};
 		};
+		55348D1F2EC982B70079A80B /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk?fbclid=IwZXh0bgNhZW0CMTEAYnJpZBExVVBBY3MwSElUNncwUnF3VXNydGMGYXBwX2lkATAIY2FsbHNpdGUCMTgAAR4id8VjhxNVEqn7nX4Rc7DUHFAN-uveoGSMW9DEaDx0MITl3QMqETnu47v5IQ_aem_nT6qlb_-3D0p_O6EjUtUuQ";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
 		555E25852EC6CB3800F3618D /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -695,6 +718,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 55102EE32EC5A6F900FE9FAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		55348D202EC982B70079A80B /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55348D1F2EC982B70079A80B /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		55348D222EC982B70079A80B /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55348D1F2EC982B70079A80B /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 		555E25862EC6CB3800F3618D /* GoogleSignInSwift */ = {
 			isa = XCSwiftPackageProductDependency;

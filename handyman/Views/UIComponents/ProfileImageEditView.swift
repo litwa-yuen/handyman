@@ -1,5 +1,5 @@
 //
-//  EditProfileView.swift
+//  ProfileImageView.swift
 //  handyman
 //
 //  Created by Lit Wa Yuen on 11/14/25.
@@ -7,7 +7,7 @@
 import SwiftUI
 import PhotosUI
 
-struct EditProfileView: View {
+struct ProfileImageEditView: View {
     @Binding var profileImage: UIImage?
     let selectedImage: UIImage?
     @Binding var scale: CGFloat
@@ -62,12 +62,7 @@ struct EditProfileView: View {
                 }
                 Spacer()
                 
-                Button {
-                    Task {
-                        await saveCroppedImage()
-                    }
-                }
-                label: {
+                Button (action: { saveCroppedImage() }) {
                     Text("Continue")
                         .bold()
                         .foregroundStyle(.black)
@@ -103,7 +98,6 @@ struct EditProfileView: View {
                         lastOffset = offset
                     }
             )
-            
         )
         .onAppear {
             scale = 1
@@ -120,12 +114,9 @@ struct EditProfileView: View {
             return CGPoint.zero
         }
         
-        
         // screen is NOT optional
-        let screen = windowScene.screen
-        let screenBounds = screen.bounds
-        let screenWidth = screenBounds.width
-        let screenHeight = screenBounds.height
+        let screenWidth = windowScene.screen.bounds.width
+        let screenHeight = windowScene.screen.bounds.height
         
         let maxX = screenWidth / 2
         let maxY = screenHeight / 2
@@ -136,8 +127,7 @@ struct EditProfileView: View {
         )
     }
     
-    @MainActor
-    private func saveCroppedImage() async {
+    private func saveCroppedImage() {
         guard selectedImage != nil else { return }
 
         // Get windowScene + window
@@ -149,8 +139,7 @@ struct EditProfileView: View {
         }
 
         // screen is NOT optional
-        let screen = windowScene.screen
-        let screenBounds = screen.bounds
+        let screenBounds = windowScene.screen.bounds
 
         let cropRect = CGRect(
             x: (screenBounds.width - circleDiameter) / 2,
@@ -170,17 +159,5 @@ struct EditProfileView: View {
         FirebaseStorageService.shared.updateProfileImage(cropped)
     
         dismiss()
-    }
-
-    
-}
-
-extension PhotosPickerItem {
-    func loadUIImage() async -> UIImage? {
-        if let data = try? await loadTransferable(type: Data.self), let image = UIImage(data: data) {
-            return image
-        } else {
-            return nil
-        }
     }
 }

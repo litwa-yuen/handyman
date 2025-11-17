@@ -1,7 +1,7 @@
 import SwiftUI
 import PhotosUI
 
-public struct ProfileImageEditorView: View {
+public struct ProfileImageView: View {
     @EnvironmentObject var appState: AppStateViewModel
 
     @State var profileImage: UIImage?
@@ -12,6 +12,7 @@ public struct ProfileImageEditorView: View {
     @State private var isEditorPresented: Bool = false
     @State private var isPhotoPickerPresented: Bool = false
     @State private var isConfirmationDialogPresented: Bool = false
+    @State private var isCameraPresented: Bool = false
 
     @State private var editorOffset: CGPoint = .zero
     @State private var editorScale: CGFloat = 1
@@ -26,7 +27,7 @@ public struct ProfileImageEditorView: View {
                     isConfirmationDialogPresented = true
                 }
             } else if isLoadingRemoteImage {
-                ProfileAvatarProgressView(size: 120)
+                CustomProgressView(size: 120)
             } else {
                 ProfileAvatarPlaceholderCircleView(size: 120, title: "Tap to Add") {
                     isPhotoPickerPresented = true
@@ -52,13 +53,20 @@ public struct ProfileImageEditorView: View {
             }
         }
         .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedPickerItem)
-        .confirmationDialog("Avtar", isPresented: $isConfirmationDialogPresented) {
+        .confirmationDialog("Avatar", isPresented: $isConfirmationDialogPresented) {
             Button(action: {
                 editorScale = 1
                 editorOffset = .zero
                 selectedPickerItem = nil
                 isPhotoPickerPresented = true
             }) { Text("Photo Library") }
+
+            Button(action: {
+                editorScale = 1
+                editorOffset = .zero
+                selectedPickerItem = nil
+                isCameraPresented = true
+            }) { Text("Camera") }
         } 
         .onChange(of: selectedPickerItem) { _, newValue in
             Task {
@@ -72,7 +80,7 @@ public struct ProfileImageEditorView: View {
             isEditorPresented = true
         }
         .fullScreenCover(isPresented: $isEditorPresented) {
-            EditProfileView($profileImage, selectedImage: selectedImage, scale: $editorScale, offset: $editorOffset)
+            ProfileImageEditView($profileImage, selectedImage: selectedImage, scale: $editorScale, offset: $editorOffset)
     
         }
     }

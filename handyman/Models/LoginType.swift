@@ -9,6 +9,7 @@ enum LoginType: String {
     case email
     case apple
     case google
+    case facebook
     
     var iconName: String {
         switch self {
@@ -18,6 +19,8 @@ enum LoginType: String {
             return "apple.fill"
         case .google:
             return "google"
+        case .facebook:
+            return "facebook"
         }
     }
     
@@ -29,6 +32,8 @@ enum LoginType: String {
             return "Continue With Apple"
         case .google:
             return "Continue With Google"
+        case .facebook:
+            return "Continue With Facebook"
         }
     }
 }

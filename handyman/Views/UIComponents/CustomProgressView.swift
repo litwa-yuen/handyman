@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ProfileAvatarProgressView: View {
+public struct CustomProgressView: View {
     public let size: CGFloat
 
     public init(size: CGFloat = 120) {

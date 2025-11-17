@@ -5,7 +5,6 @@
 //  Created by Lit Wa Yuen on 11/14/25.
 //
 import SwiftUI
-import PhotosUI
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppStateViewModel
@@ -16,7 +15,7 @@ struct SettingsView: View {
                 Color.black.ignoresSafeArea() // full-screen black background
                 VStack(spacing: 34) {
                     VStack(spacing: 8) {
-                        ProfileImageEditorView()
+                        ProfileImageView()
                         userInfo
                             .padding(.top)
                     }
@@ -50,7 +49,7 @@ struct SettingsView: View {
     
     var userInfo: some View {
         VStack (spacing: 4) {
-            Text (appState.currentUser?.displayName! ?? "" )
+            Text(appState.displayName ?? "")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(.gray)
@@ -58,13 +57,14 @@ struct SettingsView: View {
             Text(appState.currentUser?.email ?? "")
                 .foregroundColor(.gray)
             
-            Button ("Edit profile") {
+            NavigationLink(destination: EditProfileView().environmentObject(appState)) {
+                Text("Edit profile")
+                    .font(.subheadline.bold())
+                    .foregroundColor(.black)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 20)
+                    .background(.white, in: Capsule())
             }
-            .font(.subheadline.bold())
-            .foregroundColor(.black)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 20)
-            .background(.white, in: Capsule())
             .padding(.top)
         }
     }

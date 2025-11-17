@@ -22,7 +22,7 @@ struct SignUpView: View {
                         .foregroundColor(.red)
                         .font(.caption)
             }
-
+            
             Group {
                 TextField( "Name", text: $signUpViewModel.name)
                 TextField( "Email", text: $signUpViewModel.email)
