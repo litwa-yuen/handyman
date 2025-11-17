@@ -2,18 +2,53 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- URL Schemes (Google + Facebook) -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <!-- Google Sign-In -->
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- REPLACE WITH YOUR REAL REVERSED_CLIENT_ID -->
+                <string>com.googleusercontent.apps.YOUR_GOOGLE_REVERSED_CLIENT_ID</string>
+            </array>
+        </dict>
+
+        <!-- Facebook Login -->
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- REPLACE WITH YOUR FACEBOOK URL SCHEME -->
+                <string>fbYOUR_FACEBOOK_URL_SCHEME</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Facebook Config -->
+    <!-- REPLACE THESE WITH REAL VALUES LOCALLY, DO NOT UPLOAD REAL VALUES -->
+    <key>FacebookAppID</key>
+    <string>YOUR_FACEBOOK_APP_ID</string>
+
+    <key>FacebookClientToken</key>
+    <string>YOUR_FACEBOOK_CLIENT_TOKEN</string>
+
+    <key>FacebookDisplayName</key>
+    <string>YOUR_APP_NAME</string>
+
+    <!-- Google Config -->
     <key>GIDClientID</key>
-    <string>751749185225-2rsbt97283eg6uvb416crllfc5imve2p.apps.googleusercontent.com</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.751749185225-2rsbt97283eg6uvb416crllfc5imve2p</string>
-			</array>
-		</dict>
-	</array>
+    <string>YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com</string>
+
+    <!-- Facebook URL Query Schemes -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+    </array>
+
 </dict>
 </plist>
