@@ -6,9 +6,8 @@ find handyman in your local region
 # //DONE: apple login
 # //DONE: error handle
 # //DONE: user icon 
-
-
-# //Progress: setting page (view profile, edit profile)
+# //Progress: camera
+# //DONE: setting page (view profile, edit profile)
 
 # //TODO: create handyman profile (skills, paid, location, time available, certification verification)
 # //TODO: find handyman profile with location and radius
