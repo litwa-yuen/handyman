@@ -37,10 +37,6 @@ struct NavigationLinkRow: View {
             
             Text(title)
                 .foregroundColor(.black)
-            
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
         }
         
         .padding()
